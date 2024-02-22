@@ -1,14 +1,3 @@
-> ### ⚠ Binance is no longer offering support
-> Please consider using the new, offically supported Binance library available at: https://github.com/binance/binance-connector-node
-> 
-> Or this community supported library: https://github.com/ViewBlock/binance-api-node
->
->  This project is no longer being maintained.
-
-[![Star History Chart](https://api.star-history.com/svg?repos=jaggedsoft/node-binance-api&type=Timeline)](https://star-history.com/#jaggedsoft/node-binance-api&Timeline)
-
----
-
 [![Binance Community API](https://cdn.discordapp.com/attachments/569865969120575519/718166995354255370/binance-api-black.png)](https://dev.binance.vision/)
 [![Yearly Downloads](https://badgen.net/npm/dy/node-binance-api?labelColor=29B6F6&color=3D5AFE&scale=2&label=Downloads&icon=bitcoin-lightning&cache=2400)](https://npm-stat.com/charts.html?package=node-binance-api&from=2017-07-01&to=2020-07-01) ![Last Commit](https://badgen.net/github/last-commit/jaggedsoft/node-binance-api?scale=2&label=🟣%20Updated&labelColor=black&color=448AFF&cache=9999)
 <!-- [![npm downloads](https://img.shields.io/npm/dt/node-binance-api.svg?maxAge=7200)](https://www.npmjs.com/package/node-binance-api) [![Build Status](https://travis-ci.org/jaggedsoft/node-binance-api.svg?branch=master&style=flat-square)](https://travis-ci.org/jaggedsoft/node-binance-api) [![Coverage Status](https://coveralls.io/repos/github/jaggedsoft/node-binance-api/badge.svg?branch=master&style=flat-square)](https://coveralls.io/github/jaggedsoft/node-binance-api) [![CodeCov](https://codecov.io/gh/jaggedsoft/node-binance-api/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/github/jaggedsoft/node-binance-api/) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/996757cec66542c0a64fca2b4cf8a936)](https://www.codacy.com/app/jaggedsoft/node-binance-api?utm_source=github.com&utm_medium=referral&utm_content=jaggedsoft/node-binance-api&utm_campaign=Badge_Coverage) [![Codacy Grade](https://api.codacy.com/project/badge/Grade/996757cec66542c0a64fca2b4cf8a936)](https://www.codacy.com/app/jaggedsoft/node-binance-api) https://img.shields.io/npm/dm/node-binance-api.svg?labelColor=blueviolet)
