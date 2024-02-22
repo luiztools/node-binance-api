@@ -1,7 +1,7 @@
 {
   "name": "node-binance-api",
   "version": "0.13.1",
-  "description": "Binance API for node https://github.com/jaggedsoft/node-binance-api",
+  "description": "Binance API for node https://github.com/luiztools/node-binance-api/",
   "main": "node-binance-api.js",
   "typings": "node-binance-api.d.ts",
   "dependencies": {
@@ -25,18 +25,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jaggedsoft/node-binance-api.git"
+    "url": "git://github.com/luiztools/node-binance-api/"
   },
   "keywords": [
     "binance",
     "api"
   ],
-  "author": "Jon Eyrick <info@liquidity.ltd> (https://darkpool.ventures)",
+  "author": "LuizTools",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jaggedsoft/node-binance-api/issues"
+    "url": "https://github.com/luiztools/node-binance-api/issues"
   },
-  "homepage": "https://github.com/jaggedsoft/node-binance-api#readme",
+  "homepage": "https://github.com/luiztools/node-binance-api#readme",
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-counter": "^1.0.0",
