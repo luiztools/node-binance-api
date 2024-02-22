@@ -67,7 +67,7 @@ let api = function Binance( options = {} ) {
         test: false,
         hedgeMode: false,
         localAddress: false,
-        family: false,
+        family: 0,
         log: function ( ...args ) {
             console.log( Array.prototype.slice.call( args ) );
         }
@@ -3025,7 +3025,7 @@ let api = function Binance( options = {} ) {
         orderStatus: function ( symbol, orderid, callback, flags = {} ) {
             let parameters = Object.assign( { symbol: symbol }, flags );
             if (orderid){
-                Object.assign( { orderId: orderid }, parameters )
+                parameters = Object.assign( { orderId: orderid }, parameters )
             }
 
             if ( !callback ) {
