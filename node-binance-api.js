@@ -5401,6 +5401,11 @@ let api = function Binance( options = {} ) {
                 }
 
                 apiRequest( url + 'v1/listenKey', {}, function ( error, response ) {
+                    if(error || !response.listenKey) {
+                        console.error(`Error requesting a listen key:\n${error.message}\n${error.stack}\nTrying again in one minute.`);
+                        return setTimeout(reconnect, 60000);
+                    }
+
                     Binance.options.listenFutureKey = response.listenKey;
                     setTimeout( function userDataKeepAlive() { // keepalive
                         try {
