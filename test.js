@@ -17,11 +17,31 @@ const WARN_SHOULD_BE_UNDEFINED = 'should be undefined';
 const WARN_SHOULD_BE_TYPE = 'should be a ';
 const TIMEOUT = 10000;
 
+require('dotenv').config();
 let chai = require('chai');
 let assert = chai.assert;
 let path = require('path');
 let Binance = require(path.resolve(__dirname, 'node-binance-api.js'));
-let binance = new Binance();
+let binance = new Binance().options({
+  APIKEY: process.env.API_KEY,
+  APISECRET: process.env.API_SECRET,
+  recvWindow: 60000,
+  family: 0,
+  useServerTime: true,
+  reconnect: false,
+  verbose: true,
+  urls: {
+    base: "https://testnet.binance.vision/api/",
+    stream: "wss://testnet.binance.vision/ws/",
+    fapi: 'https://testnet.binancefuture.com/fapi/',
+    dapi: 'https://testnet.binancefuture.com/dapi/',
+    fstreamSingle: 'wss://stream.binancefuture.com/ws/',
+    fstream: 'wss://stream.binancefuture.com/stream?streams=',
+    dstreamSingle: 'wss://dstream.binancefuture.com/ws/',
+    dstream: 'wss://dstream.binancefuture.com/stream?streams='
+},
+});
+
 let util = require('util');
 
 let num_pairs = 299;
@@ -61,11 +81,12 @@ describe('Construct', function () {
   /*eslint no-undef: "error"*/
   it('Construct the binance object', function (done) {
     binance.options({
-      APIKEY: '5enQYcMQk2J3syHCao9xgJOnnPoGtDMhSRRAzG2Gxo90TBzXPG1itcXikQc2VRDh',
-      APISECRET: 'uWJQXigS3AjftKe8c6xK2t3rkTqkmfeeNPwcycBLGXXsuU4eUvLkPY9qcOnB2UYI',
+      APIKEY: process.env.API_KEY,
+      APISECRET: process.env.API_SECRET,
       useServerTime: true,
       reconnect: false,
       verbose: true,
+      test: true,
       log: debug
     });
     assert(typeof (binance) === 'object', 'Binance is not an object');
@@ -80,14 +101,14 @@ describe('Construct', function () {
 
     // Every variant is listed twice to make sure that the options are not shared (which happened in the past)
     let objs = [
-      new Binance().options({APIKEY: key++, APISECRET: secret}),
-      new Binance().options({APIKEY: key++, APISECRET: secret}),
-      Binance().options({APIKEY: key++, APISECRET: secret}),
-      Binance().options({APIKEY: key++, APISECRET: secret}),
-      new Binance({APIKEY: key++, APISECRET: secret}),
-      new Binance({APIKEY: key++, APISECRET: secret}),
-      Binance({APIKEY: key++, APISECRET: secret}),
-      Binance({APIKEY: key++, APISECRET: secret}),
+      new Binance().options({ APIKEY: key++, APISECRET: secret }),
+      new Binance().options({ APIKEY: key++, APISECRET: secret }),
+      Binance().options({ APIKEY: key++, APISECRET: secret }),
+      Binance().options({ APIKEY: key++, APISECRET: secret }),
+      new Binance({ APIKEY: key++, APISECRET: secret }),
+      new Binance({ APIKEY: key++, APISECRET: secret }),
+      Binance({ APIKEY: key++, APISECRET: secret }),
+      Binance({ APIKEY: key++, APISECRET: secret }),
     ];
 
     // Make sure that all objects have their own options
@@ -253,45 +274,45 @@ describe('Depth chart BNB', function () {
 });
 
 describe('Buy', function () {
-  it('Attempt to buy ETH', function (done) {
-    let quantity = 1;
-    let price = 0.069;
-    assert(typeof (binance.buy('ETHBTC', quantity, price)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
+  it('Attempt to buy BTC', function (done) {
+    let quantity = 0.001;
+    let price = 70000;
+    assert(typeof (binance.buy('BTCUSDT', quantity, price)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
     done();
   }).timeout(TIMEOUT);
 });
 
 describe('Sell', function () {
-  it('Attempt to sell ETH', function (done) {
-    let quantity = 1;
-    let price = 0.069;
-    assert(typeof (binance.sell('ETHBTC', quantity, price)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
+  it('Attempt to sell BTC', function (done) {
+    let quantity = 0.001;
+    let price = 70000;
+    assert(typeof (binance.sell('BTCUSDT', quantity, price)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
     done();
   }).timeout(TIMEOUT);
 });
 
 describe('MarketBuy', function () {
-  it('Attempt to buy ETH at market price', function (done) {
-    let quantity = 1;
-    assert(typeof (binance.marketBuy('BNBBTC', quantity)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
+  it('Attempt to buy BTC at market price', function (done) {
+    let quantity = 0.001;
+    assert(typeof (binance.marketBuy('BTCUSDT', quantity)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
     done();
   }).timeout(TIMEOUT);
 });
 
 describe('MarketSell', function () {
-  it('Attempt to sell ETH at market price', function (done) {
-    let quantity = 1;
-    assert(typeof (binance.marketSell('ETHBTC', quantity)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
+  it('Attempt to sell BTC at market price', function (done) {
+    let quantity = 0.001;
+    assert(typeof (binance.marketSell('BTCUSDT', quantity)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
     done();
   }).timeout(TIMEOUT);
 });
 
 describe('Buy order advanced', function () {
-  it('Attempt to buy BNB specifying order type', function (done) {
+  it('Attempt to buy BTC specifying order type', function (done) {
     let type = 'LIMIT';
-    let quantity = 1;
-    let price = 0.069;
-    assert(typeof (binance.buy('BNBETH', quantity, price, { type: type })) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
+    let quantity = 0.001;
+    let price = 70000;
+    assert(typeof (binance.buy('BTCUSDT', quantity, price, { type: type })) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
     done();
   }).timeout(TIMEOUT);
 });
@@ -299,19 +320,19 @@ describe('Buy order advanced', function () {
 describe('Sell Stop loess', function () {
   it('Attempt to create a stop loss order', function (done) {
     let type = 'STOP_LOSS';
-    let quantity = 1;
-    let price = 0.069;
-    let stopPrice = 0.068;
-    assert(typeof (binance.sell('ETHBTC', quantity, price, { stopPrice: stopPrice, type: type })) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
+    let quantity = 0.001;
+    let price = 70000;
+    let stopPrice = 69000;
+    assert(typeof (binance.sell('BTCUSDT', quantity, price, { stopPrice: stopPrice, type: type })) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
     done();
   }).timeout(TIMEOUT);
 });
 
 describe('Iceberg sell order', function () {
   it('Attempt to create a sell order', function (done) {
-    let quantity = 1;
-    let price = 0.069;
-    assert(typeof (binance.sell('ETHBTC', quantity, price, { icebergQty: 10 })) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
+    let quantity = 0.001;
+    let price = 70000;
+    assert(typeof (binance.sell('BTCUSDT', quantity, price, { icebergQty: 10 })) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
     done();
   }).timeout(TIMEOUT);
 });
@@ -319,14 +340,14 @@ describe('Iceberg sell order', function () {
 describe('Cancel order', function () {
   it('Attempt to cancel an order', function (done) {
     let orderid = '7610385';
-    binance.cancel('ETHBTC', orderid, (error, response, symbol) => {
+    binance.cancel('BTCUSDT', orderid, (error, response, symbol) => {
       debug(error);
       debug(response);
       debug(symbol);
       assert(typeof (error) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (response) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (symbol) === 'string', WARN_SHOULD_BE_TYPE + 'string');
-      assert(symbol === 'ETHBTC');
+      assert(symbol === 'BTCUSDT');
       assert(error !== null, WARN_SHOULD_BE_NOT_NULL);
       assert(response !== null, WARN_SHOULD_BE_NOT_NULL);
       assert(error.body === '{"code":-2011,"msg":"UNKNOWN_ORDER"}');
@@ -339,14 +360,14 @@ describe('Cancel order', function () {
 
 describe('Cancel orders', function () {
   it('Attempt to cancel all orders given a symbol', function (done) {
-    binance.cancelOrders('XMRBTC', (error, response, symbol) => {
+    binance.cancelOrders('BTCUSDT', (error, response, symbol) => {
       debug(error);
       debug(response);
       debug(symbol);
       assert(typeof (error) === 'string', WARN_SHOULD_BE_OBJ);
       assert(typeof (response) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (symbol) === 'string', WARN_SHOULD_BE_TYPE + 'string');
-      assert(symbol === 'XMRBTC');
+      assert(symbol === 'BTCUSDT');
       assert(error !== null, WARN_SHOULD_BE_NOT_NULL);
       assert(error === 'No orders present for this symbol', WARN_SHOULD_BE_TYPE + 'string');
       done();
@@ -355,15 +376,15 @@ describe('Cancel orders', function () {
 });
 
 describe('Open Orders', function () {
-  it('Attempt to show all orders to ETHBTC', function (done) {
-    binance.openOrders('ETHBTC', (error, openOrders, symbol) => {
+  it('Attempt to show all orders to BTCUSDT', function (done) {
+    binance.openOrders('BTCUSDT', (error, openOrders, symbol) => {
       debug(error);
       debug(openOrders);
       debug(symbol);
       assert(typeof (error) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (openOrders) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (symbol) === 'string', WARN_SHOULD_BE_TYPE + 'string');
-      assert(symbol === 'ETHBTC');
+      assert(symbol === 'BTCUSDT');
       assert(error === null, WARN_SHOULD_BE_NULL);
       assert(openOrders !== null, WARN_SHOULD_BE_NOT_NULL);
       assert(symbol !== null, WARN_SHOULD_BE_NOT_NULL);
@@ -390,14 +411,14 @@ describe('Open Orders', function () {
 
 describe('Order status', function () {
   it('Attempt to get the order status for a given order id', function (done) {
-    binance.orderStatus('ETHBTC', '1234567890', (error, orderStatus, symbol) => {
+    binance.orderStatus('BTCUSDT', '1234567890', (error, orderStatus, symbol) => {
       debug(error);
       debug(orderStatus);
       debug(symbol);
       assert(typeof (error) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (orderStatus) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (symbol) === 'string', WARN_SHOULD_BE_TYPE + 'string');
-      assert(symbol === 'ETHBTC');
+      assert(symbol === 'BTCUSDT');
       assert(error !== null, WARN_SHOULD_BE_NOT_NULL);
       assert(orderStatus !== null, WARN_SHOULD_BE_NOT_NULL);
       assert(error.body === '{"code":-2013,"msg":"Order does not exist."}');
@@ -409,14 +430,14 @@ describe('Order status', function () {
 
 describe('trades', function () {
   it('Attempt get all trade history for given symbol', function (done) {
-    binance.trades('SNMBTC', (error, trades, symbol) => {
+    binance.trades('BTCUSDT', (error, trades, symbol) => {
       debug(error);
       debug(trades);
       debug(symbol);
       assert(typeof (error) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (trades) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (symbol) === 'string', WARN_SHOULD_BE_TYPE + 'string');
-      assert(symbol === 'SNMBTC');
+      assert(symbol === 'BTCUSDT');
       assert(error === null, WARN_SHOULD_BE_NULL);
       assert(trades !== null, WARN_SHOULD_BE_NOT_NULL);
       assert(Object.keys(trades).length === 0);
@@ -427,14 +448,14 @@ describe('trades', function () {
 
 describe('Orders', function () {
   it('Attempt get all orders for given symbol', function (done) {
-    binance.allOrders('ETHBTC', (error, orders, symbol) => {
+    binance.allOrders('BTCUSDT', (error, orders, symbol) => {
       debug(error);
       debug(orders);
       debug(symbol);
       assert(typeof (error) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (orders) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (symbol) === 'string', WARN_SHOULD_BE_TYPE + 'string');
-      assert(symbol === 'ETHBTC');
+      assert(symbol === 'BTCUSDT');
       assert(error === null, WARN_SHOULD_BE_NULL);
       assert(orders !== null, WARN_SHOULD_BE_NOT_NULL);
       assert(Object.keys(orders).length === 0);
@@ -471,14 +492,14 @@ describe('Prevday all symbols', function () {
 
 describe('Prevday', function () {
   it('Attempt get prevday trade status for given symbol', function (done) {
-    binance.prevDay('BNBBTC', (error, prevDay, symbol) => {
+    binance.prevDay('BTCUSDT', (error, prevDay, symbol) => {
       debug(error);
       debug(prevDay);
       debug(symbol);
       assert(typeof (error) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (prevDay) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (symbol) === 'string', WARN_SHOULD_BE_TYPE + 'string');
-      assert(symbol === 'BNBBTC', 'Should be BNBBTC');
+      assert(symbol === 'BTCUSDT', 'Should be BNBBTC');
       assert(error === null, WARN_SHOULD_BE_NULL);
       assert(prevDay !== null, WARN_SHOULD_BE_NOT_NULL);
 
@@ -497,14 +518,14 @@ describe('Prevday', function () {
 
 describe('Candle sticks', function () {
   it('Attempt get candlesticks for a given symbol', function (done) {
-    binance.candlesticks('BNBBTC', '5m', (error, ticks, symbol) => {
+    binance.candlesticks('BTCUSDT', '5m', (error, ticks, symbol) => {
       debug(error);
       debug(ticks);
       debug(symbol);
       assert(typeof (error) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (ticks) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (symbol) === 'string', WARN_SHOULD_BE_TYPE + 'string');
-      assert(symbol === 'BNBBTC', 'Should be BNBBTC');
+      assert(symbol === 'BTCUSDT', 'Should be BNBBTC');
       assert(error === null, WARN_SHOULD_BE_NULL);
       assert(ticks !== null, WARN_SHOULD_BE_NOT_NULL);
 
@@ -513,9 +534,9 @@ describe('Candle sticks', function () {
       });
       done();
     }, {
-        limit: 500,
-        endTime: 1514764800000
-      });
+      limit: 500,
+      endTime: Date.now()
+    });
   }).timeout(TIMEOUT);
 });
 
@@ -935,7 +956,7 @@ describe('Websockets candlesticks', function () {
   /*global beforeEach*/
   beforeEach(function (done) {
     this.timeout(TIMEOUT);
-    binance.websockets.candlesticks(['BNBBTC'], '1m', a_candlesticks => {
+    binance.websockets.candlesticks(['BTCUSDT'], '1m', a_candlesticks => {
       cnt++;
       if (cnt > 1) return;
       candlesticks = a_candlesticks;
@@ -1151,69 +1172,69 @@ describe('Websockets array depthcache', function () {
 });
 
 describe('Staggered websockets symbol depthcache', function () {
-    let symbol;
-    let bids;
-    let asks;
-    let cnt = 0;
-    beforeEach(function (done) {
-        this.timeout(TIMEOUT);
-        binance.websockets.depthCacheStaggered('BNBBTC', (a_symbol, a_depth) => {
-            cnt++;
-            if (cnt > 1) return;
-            stopSockets(true);
-            symbol = a_symbol;
-            bids = a_depth.bids;
-            asks = a_depth.asks;
-            done();
-        });
+  let symbol;
+  let bids;
+  let asks;
+  let cnt = 0;
+  beforeEach(function (done) {
+    this.timeout(TIMEOUT);
+    binance.websockets.depthCacheStaggered('BNBBTC', (a_symbol, a_depth) => {
+      cnt++;
+      if (cnt > 1) return;
+      stopSockets(true);
+      symbol = a_symbol;
+      bids = a_depth.bids;
+      asks = a_depth.asks;
+      done();
     });
+  });
 
-    bids = binance.sortBids(bids);
-    asks = binance.sortAsks(asks);
+  bids = binance.sortBids(bids);
+  asks = binance.sortAsks(asks);
 
-    it('check result of depth cache', function () {
-        assert(typeof (bids) === 'object', WARN_SHOULD_BE_OBJ);
-        assert(typeof (asks) === 'object', WARN_SHOULD_BE_OBJ);
-        assert(typeof (symbol) === 'string', WARN_SHOULD_BE_OBJ);
-        assert(bids !== null, WARN_SHOULD_BE_NOT_NULL);
-        assert(asks !== null, WARN_SHOULD_BE_NOT_NULL);
-        assert(symbol !== null, WARN_SHOULD_BE_NOT_NULL);
-        assert(Object.keys(asks).length !== 0, 'should not be 0');
-        assert(Object.keys(bids).length !== 0, 'should not be 0');
-    });
+  it('check result of depth cache', function () {
+    assert(typeof (bids) === 'object', WARN_SHOULD_BE_OBJ);
+    assert(typeof (asks) === 'object', WARN_SHOULD_BE_OBJ);
+    assert(typeof (symbol) === 'string', WARN_SHOULD_BE_OBJ);
+    assert(bids !== null, WARN_SHOULD_BE_NOT_NULL);
+    assert(asks !== null, WARN_SHOULD_BE_NOT_NULL);
+    assert(symbol !== null, WARN_SHOULD_BE_NOT_NULL);
+    assert(Object.keys(asks).length !== 0, 'should not be 0');
+    assert(Object.keys(bids).length !== 0, 'should not be 0');
+  });
 });
 
 describe('Staggered Websockets array depthcache', function () {
-    let symbol;
-    let bids;
-    let asks;
-    let cnt = 0;
-    beforeEach(function (done) {
-        this.timeout(TIMEOUT);
-        binance.websockets.depthCacheStaggered(['BNBBTC', 'TRXBTC'], (a_symbol, a_depth) => {
-            cnt++;
-            if (cnt > 1) return;
-            stopSockets();
-            symbol = a_symbol;
-            bids = a_depth.bids;
-            asks = a_depth.asks;
-            done();
-        });
+  let symbol;
+  let bids;
+  let asks;
+  let cnt = 0;
+  beforeEach(function (done) {
+    this.timeout(TIMEOUT);
+    binance.websockets.depthCacheStaggered(['BNBBTC', 'TRXBTC'], (a_symbol, a_depth) => {
+      cnt++;
+      if (cnt > 1) return;
+      stopSockets();
+      symbol = a_symbol;
+      bids = a_depth.bids;
+      asks = a_depth.asks;
+      done();
     });
+  });
 
-    bids = binance.sortBids(bids);
-    asks = binance.sortAsks(asks);
+  bids = binance.sortBids(bids);
+  asks = binance.sortAsks(asks);
 
-    it('check result of symbols array depth cache', function () {
-        assert(typeof (bids) === 'object', WARN_SHOULD_BE_OBJ);
-        assert(typeof (asks) === 'object', WARN_SHOULD_BE_OBJ);
-        assert(typeof (symbol) === 'string', WARN_SHOULD_BE_OBJ);
-        assert(bids !== null, WARN_SHOULD_BE_NOT_NULL);
-        assert(asks !== null, WARN_SHOULD_BE_NOT_NULL);
-        assert(symbol !== null, WARN_SHOULD_BE_NOT_NULL);
-        assert(Object.keys(asks).length !== 0, 'should not be 0');
-        assert(Object.keys(bids).length !== 0, 'should not be 0');
-    });
+  it('check result of symbols array depth cache', function () {
+    assert(typeof (bids) === 'object', WARN_SHOULD_BE_OBJ);
+    assert(typeof (asks) === 'object', WARN_SHOULD_BE_OBJ);
+    assert(typeof (symbol) === 'string', WARN_SHOULD_BE_OBJ);
+    assert(bids !== null, WARN_SHOULD_BE_NOT_NULL);
+    assert(asks !== null, WARN_SHOULD_BE_NOT_NULL);
+    assert(symbol !== null, WARN_SHOULD_BE_NOT_NULL);
+    assert(Object.keys(asks).length !== 0, 'should not be 0');
+    assert(Object.keys(bids).length !== 0, 'should not be 0');
+  });
 });
 
 describe('Websockets prevDay', function () {

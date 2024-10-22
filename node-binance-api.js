@@ -4,6 +4,8 @@
  * ============================================================
  * Copyright 2017-, Jon Eyrick
  * Released under the MIT License
+ * 
+ * Forked by @luiztools
  * ============================================================
  * @module jaggedsoft/node-binance-api
  * @return {object} instance to class object */
