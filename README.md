@@ -1,21 +1,3 @@
-[![Binance Community API](https://cdn.discordapp.com/attachments/569865969120575519/718166995354255370/binance-api-black.png)](https://dev.binance.vision/)
-[![Yearly Downloads](https://badgen.net/npm/dy/node-binance-api?labelColor=29B6F6&color=3D5AFE&scale=2&label=Downloads&icon=bitcoin-lightning&cache=2400)](https://npm-stat.com/charts.html?package=node-binance-api&from=2017-07-01&to=2020-07-01) ![Last Commit](https://badgen.net/github/last-commit/jaggedsoft/node-binance-api?scale=2&label=🟣%20Updated&labelColor=black&color=448AFF&cache=9999)
-<!-- [![npm downloads](https://img.shields.io/npm/dt/node-binance-api.svg?maxAge=7200)](https://www.npmjs.com/package/node-binance-api) [![Build Status](https://travis-ci.org/jaggedsoft/node-binance-api.svg?branch=master&style=flat-square)](https://travis-ci.org/jaggedsoft/node-binance-api) [![Coverage Status](https://coveralls.io/repos/github/jaggedsoft/node-binance-api/badge.svg?branch=master&style=flat-square)](https://coveralls.io/github/jaggedsoft/node-binance-api) [![CodeCov](https://codecov.io/gh/jaggedsoft/node-binance-api/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/github/jaggedsoft/node-binance-api/) [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/996757cec66542c0a64fca2b4cf8a936)](https://www.codacy.com/app/jaggedsoft/node-binance-api?utm_source=github.com&utm_medium=referral&utm_content=jaggedsoft/node-binance-api&utm_campaign=Badge_Coverage) [![Codacy Grade](https://api.codacy.com/project/badge/Grade/996757cec66542c0a64fca2b4cf8a936)](https://www.codacy.com/app/jaggedsoft/node-binance-api) https://img.shields.io/npm/dm/node-binance-api.svg?labelColor=blueviolet)
-https://badgen.net/npm/dm/node-binance-api?labelColor=7C4DFF&color=green&scale=2&label=Downloads&icon=bitcoin
-🟣 Used by 727 https://badgen.net/github/dependents-repo/jaggedsoft/node-binance-api?labelColor=blue&color=purple&label=Used%20by&icon=github
-🧪 Releases 87 https://badgen.net/github/releases/jaggedsoft/node-binance-api?scale=2&icon=github&labelColor=purple&color=green&label=%F0%9F%A7%AA%20Release
-🎈💡 Merged PRs 79 https://badgen.net/github/merged-prs/jaggedsoft/node-binance-api
-⭐ Stars 630 https://badgen.net/github/stars/jaggedsoft/node-binance-api?scale=2&label=%E2%AD%90Stars&labelColor=black&color=purple
-✅ship Commits 568 https://badgen.net/github/commits/micromatch/micromatch?label=%E2%9C%A8Commits&labelColor=black&color=red
-⚡ Updated about 16 hours ago https://badgen.net/github/last-commit/jaggedsoft/node-binance-api?scale=2&icon=bitcoin-lightning&label=Updated&labelColor=black&color=448AFF
-👀👁 Watchers 48 https://badgen.net/github/watchers/jaggedsoft/node-binance-api
-color=blueviolet 🔵
--->
-[![Latest Version](https://img.shields.io/github/release/jaggedsoft/node-binance-api.svg?style=flat-square&labelColor=blueviolet&label=release)](https://github.com/jaggedsoft/node-binance-api/releases) [![GitHub last commit](https://img.shields.io/github/last-commit/jaggedsoft/node-binance-api.svg?maxAge=2400&labelColor=333&label=🟣%20updated)](#) [![Monthly Downloads](https://img.shields.io/npm/dm/node-binance-api.svg?labelColor=29B6F6&color=3D5AFE&label=downloads&logo=bitcoin-lightning)](https://npm-stat.com/charts.html?package=node-binance-api&from=2017-07-01&to=2020-07-01) 
-[![jaggedsoft on X](https://img.shields.io/twitter/follow/jaggedsoft.svg?style=social)](https://x.com/jaggedsoft)
-
-[![NPM](https://nodei.co/npm/node-binance-api.png?compact=true)](https://npmjs.org/package/node-binance-api)
-
 # Node Binance API
 This project is designed to help you make your own projects that interact with the [Binance API](https://github.com/binance-exchange/binance-official-api-docs). You can stream candlestick chart data, market depth, or use other advanced features such as setting stop losses and iceberg orders. This project seeks to have complete API coverage including WebSockets.
 
@@ -26,9 +8,9 @@ This project is designed to help you make your own projects that interact with t
   <a href="#websockets-implementation" style="color:#282828">Streams</a> •
   <a href="#binance-margin-api">Margin API</a> •
   <a href="#binance-lending-api">Lending API</a><br/>
-  <a href="https://github.com/jaggedsoft/node-binance-api/tree/master/examples">Examples</a> •
+  <a href="https://github.com/luiztools/node-binance-api/tree/master/examples">Examples</a> •
   <a href="#troubleshooting">Troubleshooting</a> •
-  <a href="https://github.com/jaggedsoft/node-binance-api/releases">Changelog</a> •
+  <a href="https://github.com/luiztools/node-binance-api/releases">Changelog</a> •
   <a href="https://t.me/binance_api_english">Support</a>
 </p></b>
 
@@ -40,7 +22,8 @@ This project is designed to help you make your own projects that interact with t
 const Binance = require('node-binance-api');
 const binance = new Binance().options({
   APIKEY: '<key>',
-  APISECRET: '<secret>'
+  APISECRET: '<secret>',
+  test: true, // if you want to use the sandbox/testnet
 });
 ```
 
@@ -2030,18 +2013,18 @@ let lendingData = await binance.lending();
   ```
 </details>
 
-#### [Advanced Examples](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md)
-> [exchangeInfo: Pull minimum order size, quantity, etc](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#exchangeinfo-pull-minimum-order-size-quantity-etc)\
-[Clamp order quantities to required amounts via minQty, minNotional, stepSize when placing orders](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#clamp-order-quantities-to-required-amounts-via-minqty-minnotional-stepsize-when-placing-orders)\
-[Show API Rate limits](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#show-api-rate-limits)\
-[Connect to all WebSockets at once](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#connect-to-all-websockets-at-once-thanks-keith1024)\
-[Get last order for a symbol](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#get-last-order-for-a-symbol)\
-[newOrderRespType example](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#neworderresptype-example-when-placing-orders)\
-[Recent Trades (historicalTrades, recentTrades, aggTrades functions)](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#recent-trades-historicaltrades-recenttrades-aggtrades-functions)\
-[Terminate WebSocket connections](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#terminate-websocket-connections)\
-[User Data: Account Balance Updates, Trade Updates, New Orders, Filled Orders, Cancelled Orders via WebSocket](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#user-data-account-balance-updates-trade-updates-new-orders-filled-orders-cancelled-orders-via-websocket)
-[Margin User Data: Account Balance Updates, Trade Updates, New Orders, Filled Orders, Cancelled Orders via WebSocket](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#margin-user-data-account-balance-updates-trade-updates-new-orders-filled-orders-cancelled-orders-via-websocket)
-[Asynchronous Syntax Options](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#asynchronous-syntax-options)
+#### [Advanced Examples](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md)
+> [exchangeInfo: Pull minimum order size, quantity, etc](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#exchangeinfo-pull-minimum-order-size-quantity-etc)\
+[Clamp order quantities to required amounts via minQty, minNotional, stepSize when placing orders](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#clamp-order-quantities-to-required-amounts-via-minqty-minnotional-stepsize-when-placing-orders)\
+[Show API Rate limits](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#show-api-rate-limits)\
+[Connect to all WebSockets at once](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#connect-to-all-websockets-at-once-thanks-keith1024)\
+[Get last order for a symbol](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#get-last-order-for-a-symbol)\
+[newOrderRespType example](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#neworderresptype-example-when-placing-orders)\
+[Recent Trades (historicalTrades, recentTrades, aggTrades functions)](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#recent-trades-historicaltrades-recenttrades-aggtrades-functions)\
+[Terminate WebSocket connections](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#terminate-websocket-connections)\
+[User Data: Account Balance Updates, Trade Updates, New Orders, Filled Orders, Cancelled Orders via WebSocket](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#user-data-account-balance-updates-trade-updates-new-orders-filled-orders-cancelled-orders-via-websocket)
+[Margin User Data: Account Balance Updates, Trade Updates, New Orders, Filled Orders, Cancelled Orders via WebSocket](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#margin-user-data-account-balance-updates-trade-updates-new-orders-filled-orders-cancelled-orders-via-websocket)
+[Asynchronous Syntax Options](https://github.com/luiztools/node-binance-api/blob/master/examples/advanced.md#asynchronous-syntax-options)
 
 ### Troubleshooting
 Verify that your system time is correct. If you have any suggestions don't hesitate to file an issue.
@@ -2078,7 +2061,4 @@ binance.setOption( 'verbose', true );
 ## Contribution
 - Give us a star :star:
 - Fork and Clone! Awesome
-- Select existing [issues](https://github.com/jaggedsoft/node-binance-api/issues) or create a [new issue](https://github.com/jaggedsoft/node-binance-api/issues/new) and give us a PR with your bugfix or improvement after. We love it ❤️
-
-![Downloads](https://img.shields.io/npm/dt/node-binance-api.svg?style=for-the-badge&maxAge=86400) ![Stars](https://img.shields.io/github/stars/jaggedsoft/node-binance-api.svg?style=for-the-badge&label=Stars) ![Contributors](https://img.shields.io/github/contributors/jaggedsoft/node-binance-api.svg?style=for-the-badge&maxAge=86400)
-[![jaggedsoft on X](https://img.shields.io/twitter/follow/jaggedsoft.svg?style=social)](https://x.com/jaggedsoft)
+- Select existing [issues](https://github.com/luiztools/node-binance-api/issues) or create a [new issue](https://github.com/luiztools/node-binance-api/issues/new) and give us a PR with your bugfix or improvement after. We love it ❤️

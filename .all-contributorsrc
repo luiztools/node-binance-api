@@ -1,6 +1,6 @@
 {
   "projectName": "node-binance-api",
-  "projectOwner": "jaggedsoft",
+  "projectOwner": "luiztools",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -11,12 +11,21 @@
   "commitConvention": "none",
   "contributors": [
     {
+      "login": "luiztools",
+      "name": "Luiz Duarte",
+      "avatar_url": "https://luiztools.com.br/cara.jpg",
+      "profile": "https://github.com/luiztools",
+      "contributions": [
+        "question", "maintenance", "code"
+      ]
+    },
+    {
       "login": "jaggedsoft",
       "name": "Jon Eyrick",
       "avatar_url": "https://avatars3.githubusercontent.com/u/4283360?v=4",
       "profile": "https://liquidity.ltd/",
       "contributions": [
-        "question", "maintenance", "code"
+        "code"
       ]
     },
     {

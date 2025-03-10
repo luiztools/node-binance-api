@@ -60,3 +60,4 @@ node_modules
 # code coverage"
 coverage
 
+*.txt

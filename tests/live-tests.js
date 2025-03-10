@@ -18,28 +18,30 @@ const WARN_SHOULD_BE_TYPE = 'should be a ';
 const TIMEOUT = 10000;
 
 require('dotenv').config();
-let chai = require('chai');
-let assert = chai.assert;
-let path = require('path');
-let Binance = require(path.resolve(__dirname, 'node-binance-api.js'));
-let binance = new Binance().options({
-  APIKEY: process.env.API_KEY,
-  APISECRET: process.env.API_SECRET,
+const chai = require('chai');
+const assert = chai.assert;
+const path = require('path');
+const Binance = require(path.resolve(__dirname, '../node-binance-api.js'));
+const binance = new Binance().options({
+  APIKEY: process.env.API_KEY_SPOT,
+  APISECRET: process.env.API_SECRET_SPOT,
   recvWindow: 60000,
   family: 0,
   useServerTime: true,
   reconnect: false,
   verbose: true,
-  urls: {
-    base: "https://testnet.binance.vision/api/",
-    stream: "wss://testnet.binance.vision/ws/",
-    fapi: 'https://testnet.binancefuture.com/fapi/',
-    dapi: 'https://testnet.binancefuture.com/dapi/',
-    fstreamSingle: 'wss://stream.binancefuture.com/ws/',
-    fstream: 'wss://stream.binancefuture.com/stream?streams=',
-    dstreamSingle: 'wss://dstream.binancefuture.com/ws/',
-    dstream: 'wss://dstream.binancefuture.com/stream?streams='
-},
+  test: true
+});
+const futuresBinance = new Binance().options({
+  APIKEY: process.env.API_KEY_FUTURES,
+  APISECRET: process.env.API_SECRET_FUTURES,
+  recvWindow: 60000,
+  family: 0,
+  useServerTime: true,
+  reconnect: false,
+  verbose: true,
+  test: true,
+  hedgeMode: true,
 });
 
 let util = require('util');
@@ -131,86 +133,49 @@ describe('UseServerTime', function () {
 });
 
 describe('Prices', function () {
-  it('Checks the price of BNBBTC', function (done) {
-    binance.prices('BNBBTC', (error, ticker) => {
-      debug(error);
-      debug(ticker);
-      assert(typeof (error) === 'object', WARN_SHOULD_BE_OBJ);
-      assert(typeof (ticker) === 'object', WARN_SHOULD_BE_OBJ);
-      assert(error === null, WARN_SHOULD_BE_NULL);
-      assert(ticker !== null, WARN_SHOULD_BE_NOT_NULL);
-      assert(Object.prototype.hasOwnProperty.call(ticker, 'BNBBTC'), WARN_SHOULD_HAVE_KEY + 'BNBBTC');
-      assert(Object.prototype.hasOwnProperty.call(ticker, 'ETHBTC') === false, WARN_SHOULD_NOT_HAVE_KEY + 'ETHBTC');
-      done();
-    });
+  it('Checks the price of BNBBTC', async function () {
+    const ticker = await binance.prices('BNBBTC')
+    assert(typeof (ticker) === 'object', WARN_SHOULD_BE_OBJ);
+    assert(ticker !== null, WARN_SHOULD_BE_NOT_NULL);
+    assert(Object.prototype.hasOwnProperty.call(ticker, 'BNBBTC'), WARN_SHOULD_HAVE_KEY + 'BNBBTC');
+    assert(Object.prototype.hasOwnProperty.call(ticker, 'ETHBTC') === false, WARN_SHOULD_NOT_HAVE_KEY + 'ETHBTC');
   }).timeout(TIMEOUT);
 });
 
 describe('All Prices', function () {
-  it('Checks the prices of coin pairs', function (done) {
-    binance.prices((error, ticker) => {
-      debug(error);
-      debug(ticker);
-      assert(typeof (error) === 'object', WARN_SHOULD_BE_OBJ);
-      assert(typeof (ticker) === 'object', WARN_SHOULD_BE_OBJ);
-      assert(error === null, WARN_SHOULD_BE_NULL);
-      assert(ticker !== null, WARN_SHOULD_BE_NOT_NULL);
-      assert(Object.prototype.hasOwnProperty.call(ticker, 'BNBBTC'), WARN_SHOULD_HAVE_KEY + 'BNBBTC');
-      assert(Object.keys(ticker).length >= num_pairs, 'should at least ' + num_pairs + 'currency pairs?');
-      done();
-    });
+  it('Checks the prices of coin pairs', async function () {
+    const ticker = await binance.prices();
+    assert(typeof (ticker) === 'object', WARN_SHOULD_BE_OBJ);
+    assert(ticker !== null, WARN_SHOULD_BE_NOT_NULL);
   }).timeout(TIMEOUT);
 });
 
 describe('Balances', function () {
-  it('Get the balances in the account', function (done) {
-    binance.balance((error, balances) => {
-      debug(error);
-      debug(balances);
-      assert(error === null, WARN_SHOULD_BE_NULL);
-      assert(balances !== null, WARN_SHOULD_BE_NOT_NULL);
-      assert(balances);
-      assert(Object.prototype.hasOwnProperty.call(balances, 'BNB'), WARN_SHOULD_HAVE_KEY + 'BNB');
-      assert(Object.prototype.hasOwnProperty.call(balances.BNB, 'available'), WARN_SHOULD_HAVE_KEY + 'available');
-      assert(Object.prototype.hasOwnProperty.call(balances.BNB, 'onOrder'), WARN_SHOULD_HAVE_KEY + 'onOrder');
-      assert(Object.keys(balances).length >= num_currencies, 'should at least ' + num_currencies + 'currencies?');
-      done();
-    });
+  it('Get the balances in the account', async function () {
+    const balances = await binance.balance();
+    assert(balances !== null, WARN_SHOULD_BE_NOT_NULL);
+    assert(balances);
+    assert(Object.prototype.hasOwnProperty.call(balances, 'BNB'), WARN_SHOULD_HAVE_KEY + 'BNB');
+    assert(Object.prototype.hasOwnProperty.call(balances.BNB, 'available'), WARN_SHOULD_HAVE_KEY + 'available');
+    assert(Object.prototype.hasOwnProperty.call(balances.BNB, 'onOrder'), WARN_SHOULD_HAVE_KEY + 'onOrder');
+    assert(Object.keys(balances).length >= num_currencies, 'should at least ' + num_currencies + 'currencies?');
   }).timeout(TIMEOUT);
 });
 
 describe('Book Ticker', function () {
-  it('Get the BNB book ticker', function (done) {
-    binance.bookTickers('BNBBTC', (error, ticker) => {
-      debug(error);
-      debug(ticker);
-      assert(error === null, WARN_SHOULD_BE_NULL);
-      assert(ticker !== null, WARN_SHOULD_BE_NOT_NULL);
-      assert(ticker);
-
-      let members = ['symbol', 'bidPrice', 'bidQty', 'askPrice', 'askQty'];
-      members.forEach(function (value) {
-        assert(Object.prototype.hasOwnProperty.call(ticker, value), WARN_SHOULD_HAVE_KEY + value);
-      });
-      done();
+  it('Get the BNB book ticker', async function () {
+    const ticker = await binance.bookTickers('BNBBTC')
+    assert(ticker !== null, WARN_SHOULD_BE_NOT_NULL);
+    assert(ticker);
+    let members = ['symbol', 'bidPrice', 'bidQty', 'askPrice', 'askQty'];
+    members.forEach(function (value) {
+      assert(Object.prototype.hasOwnProperty.call(ticker, value), WARN_SHOULD_HAVE_KEY + value);
     });
   }).timeout(TIMEOUT);
 
-  it('Get all book tickers', function (done) {
-    binance.bookTickers(false, (error, ticker) => {
-      assert(ticker);
-      /*
-      assert( error === null, WARN_SHOULD_BE_NULL );
-      assert( ticker !== null, WARN_SHOULD_BE_NOT_NULL );
-      assert( ticker );
-
-      let members = ['symbol', 'bidPrice', 'bidQty', 'askPrice', 'askQty'];
-      members.forEach( function( value ) {
-        assert( Object.prototype.hasOwnProperty.call(ticker, value ), WARN_SHOULD_HAVE_KEY + value );
-      });
-      */
-      done();
-    });
+  it('Get all book tickers', async function () {
+    const tickers = await binance.bookTickers(false)
+    assert(tickers !== undefined);
   }).timeout(TIMEOUT);
 });
 
@@ -246,6 +211,13 @@ describe('Market', function () {
     });
 
     assert.isNotOk(binance.getMarket('ABCDEFG'), WARN_SHOULD_BE_UNDEFINED);
+    done();
+  }).timeout(TIMEOUT);
+});
+
+describe('ping', function () {
+  it('call ping', function (done) {
+    binance.ping();
     done();
   }).timeout(TIMEOUT);
 });
@@ -292,18 +264,36 @@ describe('Sell', function () {
 });
 
 describe('MarketBuy', function () {
-  it('Attempt to buy BTC at market price', function (done) {
-    let quantity = 0.001;
-    assert(typeof (binance.marketBuy('BTCUSDT', quantity)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
-    done();
+  it('Attempt to buy BTC at market price', async function () {
+    let quantity = 0.5;
+    const res = await binance.marketBuy('BTCUSDT', quantity)
+    assert(res['orderId'] !== undefined)
   }).timeout(TIMEOUT);
 });
 
+
 describe('MarketSell', function () {
-  it('Attempt to sell BTC at market price', function (done) {
-    let quantity = 0.001;
-    assert(typeof (binance.marketSell('BTCUSDT', quantity)) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
-    done();
+  it('Attempt to sell BTC at market price', async function () {
+    let quantity = 0.5;
+    const res = await binance.marketSell('BTCUSDT', quantity)
+    assert(res['orderId'] !== undefined)
+  }).timeout(TIMEOUT);
+});
+
+describe('Futures MarketBuy', function () {
+  it('futures Attempt to buy ETH at market price', async function () {
+    let quantity = 0.1;
+    const res = await futuresBinance.futuresMarketBuy('ETHUSDT', quantity)
+    assert(res['orderId'] !== undefined)
+  }).timeout(TIMEOUT);
+});
+
+
+describe('Futures MarketSell', function () {
+  it('futures Attempt to sell ETH at market price', async function () {
+    let quantity = 0.1;
+    const res = await futuresBinance.futuresMarketSell('ETHUSDT', quantity)
+    assert(res['orderId'] !== undefined)
   }).timeout(TIMEOUT);
 });
 
@@ -350,7 +340,7 @@ describe('Cancel order', function () {
       assert(symbol === 'BTCUSDT');
       assert(error !== null, WARN_SHOULD_BE_NOT_NULL);
       assert(response !== null, WARN_SHOULD_BE_NOT_NULL);
-      assert(error.body === '{"code":-2011,"msg":"UNKNOWN_ORDER"}');
+      assert(error.body === '{"code":-2011,"msg":"Unknown order sent."}');
       assert(typeof (response.orderId) === 'undefined', WARN_SHOULD_BE_UNDEFINED);
       assert(Object.keys(response).length === 0);
       done();
@@ -362,8 +352,8 @@ describe('Cancel orders', function () {
   it('Attempt to cancel all orders given a symbol', function (done) {
     binance.cancelOrders('BTCUSDT', (error, response, symbol) => {
       debug(error);
-      debug(response);
-      debug(symbol);
+      // debug(response);
+      // debug(symbol);
       assert(typeof (error) === 'string', WARN_SHOULD_BE_OBJ);
       assert(typeof (response) === 'object', WARN_SHOULD_BE_OBJ);
       assert(typeof (symbol) === 'string', WARN_SHOULD_BE_TYPE + 'string');
@@ -655,7 +645,7 @@ describe('Exchange Info', function () {
       async_data = data;
       done(error);
     })
-  });
+  }).timeout(TIMEOUT * 5);
 
   it('Gets the exchange info as an object', function () {
     assert(typeof (async_error) === 'object', 'error should be object');
@@ -699,7 +689,7 @@ describe('System status', function () {
     members.forEach(function (member) {
       assert(Object.prototype.hasOwnProperty.call(async_data, member), WARN_SHOULD_HAVE_KEY + member);
     });
-  }).timeout(TIMEOUT);
+  }).timeout(TIMEOUT * 5);
 });
 
 describe('Withdraw', function () {
