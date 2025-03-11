@@ -4080,7 +4080,7 @@ let api = function Binance( options = {} ) {
         },
 
         futuresPositionRisk: async ( params = {} ) => {
-            return promiseRequest( 'v3/positionRisk', params, { base:fapi, type:'SIGNED' } );
+            return promiseRequest( 'v2/positionRisk', params, { base:fapi, type:'SIGNED' } );
         },
 
         futuresFundingRate: async ( symbol, params = {} ) => {
