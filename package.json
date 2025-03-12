@@ -1,7 +1,7 @@
 {
   "name": "node-binance-api",
-  "version": "0.13.8",
-  "description": "Binance API for node https://github.com/luiztools/node-binance-api/",
+  "version": "0.13.9",
+  "description": "Binance API for node https://github.com/luiztools/node-binance-api/. Compatible with NBA v0.13.5.",
   "main": "node-binance-api.js",
   "typings": "node-binance-api.d.ts",
   "dependencies": {

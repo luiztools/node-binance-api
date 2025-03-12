@@ -3415,10 +3415,11 @@ let api = function Binance( options = {} ) {
         },
 
         /**
-        * Gets the the system status
-        * @param {function} callback - the callback function
-        * @return {promise or undefined} - omitting the callback returns a promise
-        */
+         * Gets the the system status
+         * @param {function} callback - the callback function
+         * @see https://developers.binance.com/docs/wallet/others/system-status
+         * @return {promise or undefined} - omitting the callback returns a promise
+         */
         systemStatus: function ( callback ) {
             if ( !callback ) {
                 return new Promise( ( resolve, reject ) => {
@@ -3429,10 +3430,10 @@ let api = function Binance( options = {} ) {
                             resolve( response );
                         }
                     }
-                    publicRequest( wapi + 'v3/systemStatus.html', {}, callback );
+                    publicRequest( sapi + 'v1/system/status', {}, callback );
                 } )
             } else {
-                publicRequest( wapi + 'v3/systemStatus.html', {}, callback );
+                publicRequest( sapi + 'v1/system/status', {}, callback );
             }
         },
 
@@ -3516,7 +3517,8 @@ let api = function Binance( options = {} ) {
 
         /**
         * Get the deposit history for given asset
-        * @param {string} asset - the asset
+        * @see https://developers.binance.com/docs/wallet/capital/deposite-address
+        * @param {string} coin - the asset
         * @param {function} callback - the callback function
         * @return {promise or undefined} - omitting the callback returns a promise
         */
@@ -3530,10 +3532,34 @@ let api = function Binance( options = {} ) {
                             resolve( response );
                         }
                     }
-                    signedRequest( wapi + 'v3/depositAddress.html', { asset: asset }, callback );
+                    signedRequest( sapi + 'v1/capital/deposit/address', { coin: asset }, callback );
                 } )
             } else {
-                signedRequest( wapi + 'v3/depositAddress.html', { asset: asset }, callback );
+                signedRequest( sapi + 'v1/capital/deposit/address', { coin: asset }, callback );
+            }
+        },
+
+        /**
+         * Get the deposit address list for given asset
+         * @see https://developers.binance.com/docs/wallet/capital/fetch-deposit-address-list-with-network
+         * @param {string} asset - the asset
+         * @param {function} callback - the callback function
+         * @return {promise or undefined} - omitting the callback returns a promise
+         */
+        depositAddressList: function ( asset, callback ) {
+            if ( !callback ) {
+                return new Promise( ( resolve, reject ) => {
+                    callback = ( error, response ) => {
+                        if ( error ) {
+                            reject( error );
+                        } else {
+                            resolve( response );
+                        }
+                    }
+                    signedRequest( sapi + 'v1/capital/deposit/address/list', { coin: asset }, callback );
+                } )
+            } else {
+                signedRequest( sapi + 'v1/capital/deposit/address/list', { coin: asset }, callback );
             }
         },
 
@@ -3562,6 +3588,7 @@ let api = function Binance( options = {} ) {
         /**
         * Get the trade fee
         * @param {function} callback - the callback function
+        * @see https://developers.binance.com/docs/wallet/asset/trade-fee
         * @param {string} symbol (optional)
         * @return {promise or undefined} - omitting the callback returns a promise
         */
@@ -3576,15 +3603,16 @@ let api = function Binance( options = {} ) {
                             resolve( response );
                         }
                     }
-                    signedRequest( wapi + 'v3/tradeFee.html', params, callback );
+                    signedRequest( sapi + 'v1/asset/tradeFee', params, callback );
                 } )
             } else {
-                signedRequest( wapi + 'v3/tradeFee.html', params, callback );
+                signedRequest( sapi + 'v1/asset/tradeFee', params, callback );
             }
         },
 
         /**
         * Fetch asset detail (minWithdrawAmount, depositStatus, withdrawFee, withdrawStatus, depositTip)
+        * @see https://developers.binance.com/docs/wallet/asset
         * @param {function} callback - the callback function
         * @return {promise or undefined} - omitting the callback returns a promise
         */
@@ -3598,10 +3626,10 @@ let api = function Binance( options = {} ) {
                             resolve( response );
                         }
                     }
-                    signedRequest( wapi + 'v3/assetDetail.html', {}, callback );
+                    signedRequest( sapi + 'asset/assetDetail', {}, callback );
                 } )
             } else {
-                signedRequest( wapi + 'v3/assetDetail.html', {}, callback );
+                signedRequest( sapi + 'asset/assetDetail', {}, callback );
             }
         },
 

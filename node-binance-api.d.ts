@@ -668,11 +668,12 @@ declare module "node-binance-api" {
 
         /**
         * Get the deposit history for given asset
-        * @param {string} asset - the asset
+        * @see https://developers.binance.com/docs/wallet/capital/deposite-address
+        * @param {string} code - the asset
         * @param {function} callback - the callback function
         * @return {promise or undefined} - omitting the callback returns a promise
         */
-        depositAddress(asset: string, callback?: _callback): Promise<any>;
+        depositAddress(code: string, callback?: _callback): Promise<any>;
         depositAddress(...args: any): any;
 
         /**
